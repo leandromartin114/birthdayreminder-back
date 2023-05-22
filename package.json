@@ -1,0 +1,33 @@
+{
+    "name": "birthdayreminder-back",
+    "version": "1.0.0",
+    "description": "birth day reminder webapp",
+    "type": "module",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon --watch \"./index.ts\" --ext \"ts\" --exec \"ts-node-esm ./index.ts\"",
+        "build": "tsc ./index.ts",
+        "start": "node ./index.js",
+        "test": "ava"
+    },
+    "keywords": [],
+    "author": "Leandro Roldán",
+    "license": "ISC",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "express-validator": "^7.0.1",
+        "jsonwebtoken": "^9.0.0",
+        "mongoose": "^7.2.0",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.0.4"
+    },
+    "devDependencies": {
+        "@types/node": "^20.2.1",
+        "@typescript-eslint/eslint-plugin": "^5.59.6",
+        "@typescript-eslint/parser": "^5.59.6",
+        "eslint": "^8.40.0",
+        "nodemon": "^2.0.22"
+    }
+}

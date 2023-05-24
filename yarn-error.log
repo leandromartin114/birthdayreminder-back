@@ -43,12 +43,15 @@ npm manifest:
       "author": "Leandro Roldán",
       "license": "ISC",
       "dependencies": {
+          "@sendgrid/mail": "^7.7.0",
           "cors": "^2.8.5",
+          "date-fns": "^2.30.0",
           "dotenv": "^16.0.3",
           "express": "^4.18.2",
           "express-validator": "^7.0.1",
           "jsonwebtoken": "^9.0.0",
           "mongoose": "^7.2.0",
+          "random-seed": "^0.3.0",
           "ts-node": "^10.9.1",
           "typescript": "^5.0.4"
       },

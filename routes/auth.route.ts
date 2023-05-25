@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { body } from 'express-validator'
 import { login, signup } from '../controllers/auth.controller.ts'
-import { validationResultExpress } from 'middlewares/validationResultExpress.ts'
+import { validationResultExpress } from '../middlewares/validationResultExpress.ts'
 
 const router = Router()
 

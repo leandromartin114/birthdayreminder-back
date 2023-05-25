@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 const { Schema, model } = mongoose
+mongoose.Promise = global.Promise
 
 const daySchema = new Schema({
     date: {
@@ -12,4 +13,4 @@ const daySchema = new Schema({
     },
 })
 
-export const Day = model('Day', daySchema)
+export default mongoose.models.Day || model('Day', daySchema)

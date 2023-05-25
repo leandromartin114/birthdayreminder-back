@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 const { Schema, model } = mongoose
+mongoose.Promise = global.Promise
 
 const userSchema = new Schema({
     email: {
@@ -20,4 +21,4 @@ const userSchema = new Schema({
     },
 })
 
-export const User = model('User', userSchema)
+export default mongoose.models.User || model('User', userSchema)

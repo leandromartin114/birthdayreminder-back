@@ -1,76 +1,81 @@
 import gen from 'random-seed'
-import addMinutes from 'date-fns/addMinutes'
-import { User } from 'models/User'
-import { Auth } from 'models/Auth'
-
-export const login = (req, res) => {
-    // try {
-    //     const user = User.findOne(req.body.email)
-    //     if (user) {
-    //         throw({error:1100})
-    //     }
-    // } catch (error) {
-    // }
-}
-
-export const signup = (req, res) => {
-    res.json({ ok: 'signup' })
-}
+import { addMinutes } from 'date-fns'
+import { sendCodeByEmail } from '../lib/sendgrid.ts'
+import Auth from '../models/Auth.ts'
+import User from '../models/User.ts'
 
 const random = gen.create()
 
-// Finds a user in auth collection with an email
-// export async function findAuth(email: string) {
-// 	const auth = await Auth.findByEmail(email)
-// 	if (auth) {
-// 		return auth
-// 	} else {
-// 		return null
-// 	}
-// }
+// Finds a user and sends the numeric code
+export const login = async (req, res) => {
+    try {
+        // searching for an existing user
+        const email = req.body.email
+        const auth = await Auth.findOne({ email: email }).exec()
+        if (!auth) {
+            throw { error: 'The user does not exist' }
+        }
+        // sending the code
+        const code = random.intBetween(10000, 99999)
+        const now = new Date()
+        const tenMinutesExpDate = addMinutes(now, 10)
+        auth.code = code
+        auth.expires = tenMinutesExpDate
+        await auth.save()
+        await sendCodeByEmail(email, code)
+        // response
+        res.status(200).send({
+            message: 'the code was sent to ' + email,
+            code: code,
+        })
+    } catch (error) {
+        console.error(error)
+        res.status(400).send(error)
+    }
+}
 
-// Finds a user and if it doesn't exist, creates one
-// export async function createAuthAndUser(data: UserData) {
-// 	const auth = await findAuth(data.email)
-// 	if (auth) {
-// 		console.log('The user already exists')
-// 		return false
-// 	} else {
-// 		const newUser = await User.createNewUser({
-// 			fullName: data.fullName,
-// 			email: data.email,
-// 			phoneNumber: data.phoneNumber,
-// 			address: data.address,
-// 			document: data.document,
-// 			appointment: 'no',
-// 		})
-// 		const newAuth = await Auth.createNewAuth({
-// 			email: data.email,
-// 			userId: newUser.id,
-// 			code: 0,
-// 			expires: new Date(),
-// 		})
-// 		return newUser
-// 	}
-// }
+// If the user does not exist, creates one with the corresponding auth and sends the numeric code
+export const signup = async (req, res) => {
+    try {
+        // searching for an existing user
+        const email = req.body.email
+        const auth = await Auth.findOne({ email: email }).exec()
+        if (auth) {
+            throw { error: 'The user already exists' }
+        }
+        // creating the user
+        const newUser = await User.create({
+            email: email,
+            fullName: req.body.fullName,
+            birthdays: [],
+        })
+        const userId = newUser._id
+        const code = random.intBetween(10000, 99999)
+        const now = new Date()
+        const tenMinutesExpDate = addMinutes(now, 10)
+        // creating the auth
+        await Auth.create({
+            email: email,
+            code: code,
+            expires: tenMinutesExpDate,
+            userId: userId,
+        })
+        // sending the code
+        await sendCodeByEmail(email, code)
+        // response
+        res.status(200).send({
+            message: 'the code was sent to ' + email,
+            code: code,
+        })
+    } catch (error) {
+        console.error(error)
+        res.status(400).send(error)
+    }
+}
 
-// Sends code to the user email for login
-// export async function sendCode(email: string) {
-// 	const auth = await findAuth(email)
-// 	if (auth) {
-// 		const code = random.intBetween(10000, 99999)
-// 		const now = new Date()
-// 		const tenMinutesExpDate = addMinutes(now, 10)
-// 		auth.data.code = code
-// 		auth.data.expires = tenMinutesExpDate
-// 		await auth.push()
-// 		await sendCodeByEmail(email, code)
-// 		return code
-// 	} else {
-// 		console.error("The user doesn't exist")
-// 		return false
-// 	}
-// }
+export const token = (req, res) => {
+    res.json({ ok: 'token' })
+}
 
 // Generates the token for user authentication
 // export async function sendToken(email: string, code: number) {

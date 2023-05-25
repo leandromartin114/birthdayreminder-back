@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 const { Schema, model } = mongoose
+mongoose.Promise = global.Promise
 
 const authSchema = new Schema({
     email: {
@@ -25,4 +26,4 @@ const authSchema = new Schema({
     },
 })
 
-export const Auth = model('Auth', authSchema)
+export default mongoose.models.Auth || model('Auth', authSchema)

@@ -4,8 +4,9 @@ dotenv.config()
 
 // Generate a token for the user
 export function generateToken(obj) {
+    const expiresIn = 60 * 15
     try {
-        const token = jwt.sign(obj, process.env.JWT_SECRET)
+        const token = jwt.sign(obj, process.env.JWT_SECRET, { expiresIn })
         return token
     } catch (error) {
         console.error('Problem with the token generation')

@@ -1,6 +1,7 @@
 import gen from 'random-seed'
-import { addMinutes } from 'date-fns'
+import { addMinutes, isAfter } from 'date-fns'
 import { sendCodeByEmail } from '../lib/sendgrid.ts'
+import { generateToken } from '../lib/jwt.ts'
 import Auth from '../models/Auth.ts'
 import User from '../models/User.ts'
 
@@ -26,7 +27,7 @@ export const login = async (req, res) => {
         // response
         res.status(200).send({
             message: 'the code was sent to ' + email,
-            code: code,
+            code,
         })
     } catch (error) {
         console.error(error)
@@ -63,9 +64,9 @@ export const signup = async (req, res) => {
         // sending the code
         await sendCodeByEmail(email, code)
         // response
-        res.status(200).send({
+        res.status(201).send({
             message: 'the code was sent to ' + email,
-            code: code,
+            code,
         })
     } catch (error) {
         console.error(error)
@@ -73,25 +74,30 @@ export const signup = async (req, res) => {
     }
 }
 
-export const token = (req, res) => {
-    res.json({ ok: 'token' })
+// Checks the email and if the code is not expired returns the token
+export const token = async (req, res) => {
+    try {
+        // searching for the user with a valid code
+        const email = req.body.email
+        const code = req.body.code
+        const auth = await Auth.find({ email: email, code: code }).exec()
+        if (auth.length === 0) {
+            throw { error: 'Invalid email or code' }
+        }
+        // checking if the code is expired
+        const expires = auth[0].expires
+        const now = new Date()
+        const expired = isAfter(now, expires)
+        if (expired) {
+            throw { error: 'Expired code' }
+        }
+        // generating token for authentication
+        const token = generateToken({ userId: auth[0].userId })
+        auth[0].expires = now
+        await auth[0].save()
+        res.status(200).send({ token })
+    } catch (error) {
+        console.error(error)
+        res.status(401).send(error)
+    }
 }
-
-// Generates the token for user authentication
-// export async function sendToken(email: string, code: number) {
-// 	const auth = await Auth.findByEmailAndCode(email, code)
-// 	if (!auth) {
-// 		return null
-// 	}
-// 	const expired = auth.isCodeExpired()
-// 	if (expired) {
-// 		console.error('Expired code')
-// 		return expired
-// 	} else {
-// 		const token = generateToken({ userId: auth.data.userId })
-// 		const now = new Date()
-// 		auth.data.expires = now
-// 		auth.push()
-// 		return token
-// 	}
-// }

@@ -1,6 +1,12 @@
+import { Response, NextFunction } from 'express'
+import { RequestWithUserId } from '../interfaces/index.ts'
 import { decodeToken } from '../lib/jwt.ts'
 
-export const tokenAuthentication = (req, res, next) => {
+export const tokenAuthentication = (
+    req: RequestWithUserId,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const token = req.headers.authorization.split(' ')[1]
         if (!token) {

@@ -1,3 +1,4 @@
+import { Response, Request } from 'express'
 import gen from 'random-seed'
 import { addMinutes, isAfter } from 'date-fns'
 import { sendCodeByEmail } from '../lib/sendgrid.ts'
@@ -8,7 +9,7 @@ import User from '../models/User.ts'
 const random = gen.create()
 
 // Finds a user and sends the numeric code
-export const login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
     try {
         // searching for an existing user
         const email = req.body.email
@@ -36,7 +37,7 @@ export const login = async (req, res) => {
 }
 
 // If the user does not exist, creates one with the corresponding auth and sends the numeric code
-export const signup = async (req, res) => {
+export const signup = async (req: Request, res: Response) => {
     try {
         // searching for an existing user
         const email = req.body.email
@@ -75,7 +76,7 @@ export const signup = async (req, res) => {
 }
 
 // Checks the email and if the code is not expired returns the token
-export const token = async (req, res) => {
+export const token = async (req: Request, res: Response) => {
     try {
         // searching for the user with a valid code
         const email = req.body.email

@@ -1,6 +1,11 @@
+import { Request, Response, NextFunction } from 'express'
 import { validationResult } from 'express-validator'
 
-export const validationResultExpress = (req, res, next) => {
+export const validationResultExpress = (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {

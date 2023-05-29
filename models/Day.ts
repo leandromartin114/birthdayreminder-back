@@ -5,7 +5,7 @@ mongoose.Promise = global.Promise
 
 const daySchema = new Schema({
     date: {
-        type: Date,
+        type: String,
         require: true,
     },
     birthdays: {

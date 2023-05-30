@@ -29,7 +29,7 @@ export const newBirthday = async (req: RequestWithUserId, res: Response) => {
             day.birthdays.push(birthday)
             await day.save()
             // response
-            res.status(201).send('birthday saved')
+            res.status(201).send({ message: 'birthday saved' })
         }
     } catch (error) {
         console.error(error)
@@ -63,7 +63,7 @@ export const deleteBirthday = async (req: RequestWithUserId, res: Response) => {
         day.birthdays = newDayBirthdays
         await day.save()
         // response
-        res.status(200).send('birthday deleted')
+        res.status(200).send({ message: 'birthday deleted' })
     } catch (error) {
         console.error(error)
         res.status(500).send(error)

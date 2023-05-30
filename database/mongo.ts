@@ -4,11 +4,9 @@ dotenv.config()
 
 const uri = process.env.MONGO_URI
 
-export default function databaseConnection() {
-    try {
-        mongoose.connect(uri)
-        console.log('Connected to MongoDB')
-    } catch (error) {
-        console.error('Connection failed: ' + error)
-    }
+try {
+    mongoose.connect(uri)
+    console.log('Connected to MongoDB')
+} catch (error) {
+    console.error('Connection failed: ' + error)
 }

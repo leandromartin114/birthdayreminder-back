@@ -1,7 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-// import '../database/mongo.ts'
-import mongoose from 'mongoose'
+import '../database/mongo.ts'
 import authRouter from '../routes/auth.route.ts'
 import userRouter from '../routes/user.route.ts'
 import birthdayRouter from '../routes/birthday.route.ts'
@@ -10,14 +9,6 @@ dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3000
-const uri = process.env.MONGO_URI
-
-try {
-    mongoose.connect(uri)
-    console.log('Connected to MongoDB')
-} catch (error) {
-    console.error('Connection failed: ' + error)
-}
 
 app.use(express.json({ limit: '50mb' }))
 app.use(cors())

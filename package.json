@@ -8,7 +8,7 @@
         "dev": "nodemon --watch \"./index.ts\" --ext \"ts\" --exec \"ts-node-esm ./index.ts\"",
         "build": "tsc ./index.ts",
         "start": "node ./index.js",
-        "test": "ava"
+        "test": "jest"
     },
     "keywords": [],
     "author": "Leandro Roldán",
@@ -28,10 +28,24 @@
     },
     "devDependencies": {
         "@types/express": "^4.17.17",
+        "@types/jest": "^29.5.1",
         "@types/node": "^20.2.1",
         "@typescript-eslint/eslint-plugin": "^5.59.6",
         "@typescript-eslint/parser": "^5.59.6",
         "eslint": "^8.40.0",
-        "nodemon": "^2.0.22"
+        "jest": "^29.5.0",
+        "nodemon": "^2.0.22",
+        "supertest": "^6.3.3",
+        "ts-jest": "^29.1.0"
+    },
+    "jest": {
+        "preset": "ts-jest",
+        "testEnvironment": "node",
+        "collectCoverage": true,
+        "coveragePathIgnorePatterns": [
+            "/node_modules/",
+            "/test/",
+            "/dist/"
+        ]
     }
 }

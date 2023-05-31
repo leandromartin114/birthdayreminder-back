@@ -6,8 +6,6 @@
     "main": "index.js",
     "scripts": {
         "dev": "nodemon --watch \"./devServer.ts\" --ext \"ts\" --exec \"ts-node-esm ./devServer.ts\"",
-        "build": "tsc ./index.ts",
-        "start": "node ./index.js",
         "test": "jest"
     },
     "keywords": [],

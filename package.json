@@ -8,7 +8,8 @@
         "dev": "nodemon --watch \"./devServer.ts\" --ext \"ts\" --exec \"ts-node-esm ./devServer.ts\"",
         "build": "tsc ./index.ts",
         "start": "node ./index.js",
-        "test": "jest"
+        "test": "jest",
+        "vercel-build": "echo hello"
     },
     "keywords": [],
     "author": "Leandro Roldán",

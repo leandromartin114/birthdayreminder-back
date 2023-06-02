@@ -1,4 +1,4 @@
-import app from './app.ts'
+import app from './index.ts'
 import authRouter from './routes/auth.route.ts'
 import userRouter from './routes/user.route.ts'
 import birthdayRouter from './routes/birthday.route.ts'

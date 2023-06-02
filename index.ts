@@ -1,9 +1,9 @@
 import express from 'express'
 import cors from 'cors'
-import './database/mongo.ts'
-import authRouter from './routes/auth.route.ts'
-import userRouter from './routes/user.route.ts'
-import birthdayRouter from './routes/birthday.route.ts'
+import './database/mongo.js'
+import authRouter from './routes/auth.route.js'
+import userRouter from './routes/user.route.js'
+import birthdayRouter from './routes/birthday.route.js'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
